@@ -1,0 +1,390 @@
+#VRML V2.0 utf8
+
+#Created with V-Realm Builder v2.0
+#Integrated Data Systems Inc.
+#www.ids-net.com
+
+
+Background {
+	groundAngle	[ 0.9, 1.5, 1.57 ]
+	groundColor	[ 0 0.8 0,
+			  0.99 0.795006 0.655563,
+			  0.154913 0.0462127 0.82,
+			  0.872653 0.94 0.842182 ]
+	skyAngle	[ 0.1, 1.2, 1.57 ]
+	skyColor	[ 0.536743 0.8 0.669491,
+			  0.7 0.47685 0.663531,
+			  0.543369 0.7 0.527385,
+			  0.319993 0.0040286 0.37 ]
+}
+Group {
+	children [ 
+	    Shape {
+		    appearance	Appearance {
+			    material	Material {
+				    diffuseColor	0.15 0.11 1
+			    }
+
+		    }
+
+		    geometry	Box {
+			    size	25 5 50
+		    }
+
+	    }
+
+	    DEF Esfera1 Transform {
+		    translation	12.5 0 20
+		    children [ 
+			Shape {
+				appearance	Appearance {
+					material	Material {
+						diffuseColor	0.16 1 0.8
+					}
+
+				}
+
+				geometry	Sphere {
+					radius	5
+				}
+
+			}
+
+			DEF Muslo1 Transform {
+				translation	5 0 0
+				rotation	0 0 1  1.57
+				children [ 
+				    Shape {
+					    appearance	Appearance {
+						    material	Material {
+							    diffuseColor	1 1 0
+						    }
+
+					    }
+
+					    geometry	Cylinder {
+						    height	10
+						    radius	2.5
+					    }
+
+				    }
+
+				    DEF Pie1 Transform {
+					    translation	-10 -5 0
+					    rotation	0 0 1  1.57
+					    children Shape {
+						    appearance	Appearance {
+							    material	Material {
+								    diffuseColor	1 0 0
+							    }
+
+						    }
+
+						    geometry	Cylinder {
+							    height	20
+							    radius	0.75
+						    }
+
+					    }
+				    }
+				]
+			}
+		    ]
+	    }
+
+	    DEF Esfera2 Transform {
+		    translation	12.5 0 0
+		    children [ 
+			Shape {
+				appearance	Appearance {
+					material	Material {
+						diffuseColor	0.16 1 0.8
+					}
+
+				}
+
+				geometry	Sphere {
+					radius	5
+				}
+
+			}
+
+			DEF Muslo2 Transform {
+				translation	5 0 0
+				rotation	0 0 1  1.57
+				children [ 
+				    Shape {
+					    appearance	Appearance {
+						    material	Material {
+							    diffuseColor	1 1 0
+						    }
+
+					    }
+
+					    geometry	Cylinder {
+						    height	10
+						    radius	2.5
+					    }
+
+				    }
+
+				    DEF Pie2 Transform {
+					    translation	-10 -5 0
+					    rotation	0 0 1  1.57
+					    children Shape {
+						    appearance	Appearance {
+							    material	Material {
+								    diffuseColor	1 0 0
+							    }
+
+						    }
+
+						    geometry	Cylinder {
+							    height	20
+							    radius	0.75
+						    }
+
+					    }
+				    }
+				]
+			}
+		    ]
+	    }
+
+	    DEF Esfera3 Transform {
+		    translation	12.5 0 -20
+		    children [ 
+			Shape {
+				appearance	Appearance {
+					material	Material {
+						diffuseColor	0.16 1 0.8
+					}
+
+				}
+
+				geometry	Sphere {
+					radius	5
+				}
+
+			}
+
+			DEF Muslo3 Transform {
+				translation	5 0 0
+				rotation	0 0 1  1.57
+				children [ 
+				    Shape {
+					    appearance	Appearance {
+						    material	Material {
+							    diffuseColor	1 1 0
+						    }
+
+					    }
+
+					    geometry	Cylinder {
+						    height	10
+						    radius	2.5
+					    }
+
+				    }
+
+				    DEF Pie3 Transform {
+					    translation	-10 -5 0
+					    rotation	0 0 1  1.57
+					    children Shape {
+						    appearance	Appearance {
+							    material	Material {
+								    diffuseColor	1 0 0
+							    }
+
+						    }
+
+						    geometry	Cylinder {
+							    height	20
+							    radius	0.75
+						    }
+
+					    }
+				    }
+				]
+			}
+		    ]
+	    }
+
+	    DEF Esfera4 Transform {
+		    translation	-12.5 0 -20
+		    children [ 
+			Shape {
+				appearance	Appearance {
+					material	Material {
+						diffuseColor	0.16 1 0.8
+					}
+
+				}
+
+				geometry	Sphere {
+					radius	5
+				}
+
+			}
+
+			DEF Muslo4 Transform {
+				translation	-5 0 0
+				rotation	0 0 1  1.57
+				children [ 
+				    Shape {
+					    appearance	Appearance {
+						    material	Material {
+							    diffuseColor	1 1 0
+						    }
+
+					    }
+
+					    geometry	Cylinder {
+						    height	10
+						    radius	2.5
+					    }
+
+				    }
+
+				    DEF Pie4 Transform {
+					    translation	-10 5 0
+					    rotation	0 0 1  1.57
+					    children Shape {
+						    appearance	Appearance {
+							    material	Material {
+								    diffuseColor	1 0 0
+							    }
+
+						    }
+
+						    geometry	Cylinder {
+							    height	20
+							    radius	0.75
+						    }
+
+					    }
+				    }
+				]
+			}
+		    ]
+	    }
+
+	    DEF Esfera5 Transform {
+		    translation	-12.5 0 0
+		    children [ 
+			Shape {
+				appearance	Appearance {
+					material	Material {
+						diffuseColor	0.16 1 0.8
+					}
+
+				}
+
+				geometry	Sphere {
+					radius	5
+				}
+
+			}
+
+			DEF Muslo5 Transform {
+				translation	-5 0 0
+				rotation	0 0 1  1.57
+				children [ 
+				    Shape {
+					    appearance	Appearance {
+						    material	Material {
+							    diffuseColor	1 1 0
+						    }
+
+					    }
+
+					    geometry	Cylinder {
+						    height	10
+						    radius	2.5
+					    }
+
+				    }
+
+				    DEF Pie5 Transform {
+					    translation	-10 5 0
+					    rotation	0 0 1  1.57
+					    children Shape {
+						    appearance	Appearance {
+							    material	Material {
+								    diffuseColor	1 0 0
+							    }
+
+						    }
+
+						    geometry	Cylinder {
+							    height	20
+							    radius	0.75
+						    }
+
+					    }
+				    }
+				]
+			}
+		    ]
+	    }
+
+	    DEF Esfera6 Transform {
+		    translation	-12.5 0 20
+		    children [ 
+			Shape {
+				appearance	Appearance {
+					material	Material {
+						diffuseColor	0.16 1 0.8
+					}
+
+				}
+
+				geometry	Sphere {
+					radius	5
+				}
+
+			}
+
+			DEF Muslo6 Transform {
+				translation	-5 0 0
+				rotation	0 0 1  1.57
+				children [ 
+				    Shape {
+					    appearance	Appearance {
+						    material	Material {
+							    diffuseColor	1 1 0
+						    }
+
+					    }
+
+					    geometry	Cylinder {
+						    height	10
+						    radius	2.5
+					    }
+
+				    }
+
+				    DEF Pie6 Transform {
+					    translation	-10 5 0
+					    rotation	0 0 1  1.57
+					    children Shape {
+						    appearance	Appearance {
+							    material	Material {
+								    diffuseColor	1 0 0
+							    }
+
+						    }
+
+						    geometry	Cylinder {
+							    height	20
+							    radius	0.75
+						    }
+
+					    }
+				    }
+				]
+			}
+		    ]
+	    }
+	]
+}

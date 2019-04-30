@@ -1,0 +1,62 @@
+#VRML V2.0 utf8
+#Archivo de una pata del robot Hexapodo
+
+		
+#Primera esfera
+
+DEF Esfera Transform {
+	translation 12.5 0 20
+	children [
+  		# aqui empieza la primera esfera
+		Shape {
+			appearance Appearance {
+				material Material {
+					diffuseColor 0.16 1.0 0.8
+				}
+			}
+			geometry Sphere {radius 5}
+		}
+
+		# muslo 1
+				
+		Transform {
+			rotation 0 0 1 1.57
+			translation 5 0 0
+			children [
+				Shape {
+					appearance Appearance {
+						material Material {
+							diffuseColor 1 1 0
+						}
+					}
+					geometry Cylinder {
+						height 10
+						radius 2.5
+					}
+				}
+
+				# pie 1
+
+				Transform {
+					rotation 0 0 1 1.57
+					translation -10 -5 0
+					children [
+						Shape {
+							appearance Appearance {
+								material Material {
+									diffuseColor 1 0 0
+								}
+							}
+							geometry Cylinder {
+								height 20
+								radius 0.75
+							}								
+						}
+					]
+	
+				}
+			]
+		}
+
+	]
+},

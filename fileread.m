@@ -1,0 +1,1 @@
+A = csvread(`G:\桌面\动力学模型\YXYBC3\postData\UMBILICAL\DY_DATA`,8,8)
