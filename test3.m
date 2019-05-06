@@ -1,4 +1,5 @@
-clc;clear;clf;
+%clc;
+clear;clf;
 %水密度
 pho = 1000;
 %关节角速度
@@ -8,6 +9,7 @@ a = [0,0,0,0];
 %pos = random('norm',90,180,[1,5]);
 %表示都为弧度制
 pos2Ini = pi/2+pi/18; 
+%pos2Ini = 0;
 pos = [0,pos2Ini,0,0];
 ra =10*random('norm',1,1,[3,1]);
 cog3 = 10^-3.*[4.46769e-06 0.828721 54.3558];
@@ -53,8 +55,8 @@ robot=SerialLink(L,'name','robot');
 zi = [0;0;1];
 xi = [1;0;0];
 yi = [0;1;0];
-T = 6;
-ddt = 0.1;
+T = 4;
+ddt = 0.01;
 figList1 = zeros(1,T/ddt);
 figList2 = zeros(1,T/ddt);
 
@@ -62,9 +64,11 @@ figList3 = zeros(1,T/ddt);
 
 
 for t = 0:ddt:T
-    [pos(1),w(1),a(1)] = tra(pi/4,t,2);
+%    [pos(1),w(1),a(1)] = tra(pi/4,t,1);
     %pos(1) = pos(1) + pi/2;
-    [pos(4),w(4),a(4)] = tra(pi/4,t-0.5,2);
+%     [pos(4),w(4),a(4)] = tra(pi/4,t-0.5,2);
+    
+   [pos(4),w(4),a(4)] = tra(pi/4,t-0.5,1);
   %  [pos(2),w(2),a(2)] = tra(pi/10,t,2);
   %  pos(2) = pos(2) + pos2Ini;
 %     w = 0*w;
@@ -101,14 +105,15 @@ for t = 0:ddt:T
     for k = 0:dx:0.12
     %计算每个点在本地坐标系中的值
         %翼的方向在末关节坐标系中是沿着x方向的
+        %y轴垂直于翼的表面
         locPoint_x = k + bais;
-       
+        
         locV = endVel(1:3);
         locPoint = [locPoint_x;0;0];
         wolPoint = SEList(4)*locPoint;
         %到了这一步速度时以本地坐标系表示的
-        locV = [0;dot(locV,SEList(4)*yi-endPoint);dot(locV,SEList(4)*zi-endPoint)];
-
+        locV = [dot(locV,SEList(4)*xi-endPoint);dot(locV,SEList(4)*yi-endPoint);dot(locV,SEList(4)*zi-endPoint)];
+        %locV = [0;dot(locV,SEList(4)*yi);dot(locV,SEList(4)*zi)];
         locV_tamp = [w(4)*locPoint_x*yi;1];
         
       % T1 = trotz(pos(4)/pi*180);
@@ -121,21 +126,23 @@ for t = 0:ddt:T
         %求得攻角alpha
         %cosA = dot(locV_tamp,zi)/norm(U);
         %alpha = acos(cosA)
-        alpha = atan(locV_tamp(2)/locV_tamp(3));
+        alpha = atan(locV_tamp(3)/locV_tamp(2));
         
         
         %！！！！！！！！！！！攻角该如何就是那这部分在好好查一查！！！！！！！！！！！！！！
-        alpha = abs(alpha);
+      %  alpha = abs(alpha);
         
         %wolPoint = SEList(4)*locPoint;
         %relw = w(4)*zi;
         %vtamp = cross(locPoint,relw') + v(1:3) + cross(wolPoint',v(4:6));
         %U = (dot(vtamp',SEList(4)*yi))^2+(dot(vtamp',SEList(4)*zi))^2;
         %计算两个方向的合力
-        %计算升力并向量化，这里进行了简化，假设我们的升力系数为1
+        %计算升力并向量化
         L = 0.5.*pho*U^2.*zi*sin(2*alpha)*0.08*dx*CL(alpha);
+%          L = 0.5.*pho*U^2.*zi*sin(2*alpha)*0.08*dx;
         %计算阻力
         F = 0.5*pho*yi*U^2*cos(1-cos(2*alpha))*0.08*dx*CD(alpha);
+%         F = 0.5*pho*yi*U^2*cos(1-cos(2*alpha))*0.08*dx;
         %附加质量力
         F_m = pi*pho*locV_tamp*0.08*0.08/4*dx;
         %计算力在大地坐标系下的表示
@@ -147,7 +154,7 @@ for t = 0:ddt:T
         %计算合速度
         wolV = SEList(4)*locV_tamp-endPoint;
     end
-    [tau,wbase]=robot.rne(pos,w,a);
+    [tau,wbase]=robot.rne(pos,w,a,'gravity',[0;0;0]);
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
@@ -155,19 +162,21 @@ for t = 0:ddt:T
   %  [wolPoint,wolV,F_tol,M_tol] = legDy(robot,pos,w,a,gravity);
 
     %记得重新处理重力的影响
-%    F_tol = F_tol + wbase(1:3);
-%    M_tol = M_tol + wbase(4:6);
+    F_tol = F_tol + wbase(1:3);
+    M_tol = M_tol + wbase(4:6);
     figList1(floor(t/ddt)+1) = F_tol(1);
     
-    %figList2 = [figList2,alpha];
-    figList2(round(t/ddt)+1) = F_tol(2);
-    figList3(round(t/ddt)+1) = F_tol(3);
+   figList2(round(t/ddt)+1) = alpha/pi*180;
+     figList3(round(t/ddt)+1) = norm(F);
+    %figList2(round(t/ddt)+1) = F_tol(2);
+ %   figList3(round(t/ddt)+1) = F_tol(3);
 %      figure(1);
 %      plot(t,F_tol(1),'o');
 %      hold on;
 
     figure(4)
     robot.plot(pos)
+  %  SEList(4).plot
 %    endVel;
     quiver3(wolPoint(1),wolPoint(2),wolPoint(3),wolV(1),wolV(2),wolV(3),0.2,'b');
    % plot3(wolPoint(1),wolPoint(2),wolPoint(3),'o')
