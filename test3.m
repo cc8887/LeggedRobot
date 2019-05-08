@@ -64,12 +64,12 @@ figList3 = zeros(1,T/ddt);
 
 
 for t = 0:ddt:T
-%    [pos(1),w(1),a(1)] = tra(pi/4,t,1);
+   [pos(1),w(1),a(1)] = tra(pi/4,t,0.5);
     %pos(1) = pos(1) + pi/2;
-%     [pos(4),w(4),a(4)] = tra(pi/4,t-0.5,2);
+     [pos(4),w(4),a(4)] = tra(pi/4,t-0.5/4,0.5);
     
-   [pos(4),w(4),a(4)] = tra(pi/4,t-0.5,1);
-  %  [pos(2),w(2),a(2)] = tra(pi/10,t,2);
+  % [pos(4),w(4),a(4)] = tra(pi/4,t-0.5,1);
+%     [pos(2),w(2),a(2)] = tra(pi/10,t,2);
   %  pos(2) = pos(2) + pos2Ini;
 %     w = 0*w;
 %     a = 0*a;
@@ -112,7 +112,8 @@ for t = 0:ddt:T
         locPoint = [locPoint_x;0;0];
         wolPoint = SEList(4)*locPoint;
         %到了这一步速度时以本地坐标系表示的
-        locV = [dot(locV,SEList(4)*xi-endPoint);dot(locV,SEList(4)*yi-endPoint);dot(locV,SEList(4)*zi-endPoint)];
+        %locV = [dot(locV,SEList(4)*xi-endPoint);dot(locV,SEList(4)*yi-endPoint);dot(locV,SEList(4)*zi-endPoint)];
+        locV = [0;dot(locV,SEList(4)*yi-endPoint);dot(locV,SEList(4)*zi-endPoint)];
         %locV = [0;dot(locV,SEList(4)*yi);dot(locV,SEList(4)*zi)];
         locV_tamp = [w(4)*locPoint_x*yi;1];
         
@@ -130,7 +131,7 @@ for t = 0:ddt:T
         
         
         %！！！！！！！！！！！攻角该如何就是那这部分在好好查一查！！！！！！！！！！！！！！
-      %  alpha = abs(alpha);
+         alpha = abs(alpha);
         
         %wolPoint = SEList(4)*locPoint;
         %relw = w(4)*zi;
@@ -164,11 +165,13 @@ for t = 0:ddt:T
     %记得重新处理重力的影响
     F_tol = F_tol + wbase(1:3);
     M_tol = M_tol + wbase(4:6);
-    figList1(floor(t/ddt)+1) = F_tol(1);
-    
+   figList1(floor(t/ddt)+1) = F_tol(1);
+%      figList1(round(t/ddt)+1) = norm(L);
    figList2(round(t/ddt)+1) = alpha/pi*180;
-     figList3(round(t/ddt)+1) = norm(F);
-    %figList2(round(t/ddt)+1) = F_tol(2);
+   
+  % figList2(round(t/ddt)+1) = U;
+%      figList3(round(t/ddt)+1) = norm(F);
+    figList3(round(t/ddt)+1) = F_tol(2);
  %   figList3(round(t/ddt)+1) = F_tol(3);
 %      figure(1);
 %      plot(t,F_tol(1),'o');
