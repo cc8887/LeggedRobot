@@ -1,0 +1,9 @@
+diff a/legDy.m b/legDy.m	(rejected hunks)
+@@ -88,6 +88,7 @@
+         %������ٶ�
+         wolV = SEList(4)*locV_tamp-endPoint;
+     end
++    [tau,wbase]=robot.rne(pos,w,a,'gravity',[0;0;0]);
+     %�ǵ����´���������Ӱ��
+     F_tol = F_tol + wbase(1:3);
+     M_tol = M_tol + wbase(4:6);    

@@ -111,8 +111,10 @@ clc;clear;clf;
 %  plot(tt,Cl)
 %   plot(tt,Cd)
 
-
-L(1) = Link('revolute','d',0.01,'a', 10, 'alpha', pi/2,'m',10);
-robot=SerialLink(L,'name','robot');
-robot.plot([0])
-
+% 
+% L(1) = Link('revolute','d',0.01,'a', 10, 'alpha', pi/2,'m',10);
+% robot=SerialLink(L,'name','robot');
+% robot.plot([0])
+a = [1 1];
+qq(1) = ones(2,1);
+qq(2) = ones(2,1);
