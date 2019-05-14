@@ -34,23 +34,46 @@ setup(block);
 function setup(block)
 
   % Register the number of ports.
-  block.NumInputPorts  = 1;
-  block.NumOutputPorts = 1;
+  block.NumInputPorts  = 4;
+  block.NumOutputPorts = 2;
   
   % Set up the port properties to be inherited or dynamic.
   block.SetPreCompInpPortInfoToDynamic;
   block.SetPreCompOutPortInfoToDynamic;
 
   % Override the input port properties.
-  %block.InputPort(1).DatatypeID  = 0;  % double
-  %block.InputPort(1).Complexity  = 'Real';
-  block.InputPort(1).Dimensions = 2;
+  block.InputPort(1).DatatypeID  = 0;  % double
+  block.InputPort(1).Complexity  = 'Real';
+  block.InputPort(1).Dimensions = [4 1];
+  
+  block.InputPort(2).DatatypeID  = 0;  % double
+  block.InputPort(2).Complexity  = 'Real';
+  block.InputPort(2).Dimensions = [4 1];
+  
+  block.InputPort(3).DatatypeID  = 0;  % double
+  block.InputPort(3).Complexity  = 'Real';
+  block.InputPort(3).Dimensions = [4 1];
+  
+  block.InputPort(4).DatatypeID  = 0;  % double
+  block.InputPort(4).Complexity  = 'Real';
+  block.InputPort(4).Dimensions = [3 1];
+  
+%   block.InputPort(2).DatatypeID  = 0;  % double
+%   block.InputPort(2).Complexity  = 'Real';
+%   block.InputPort(2).Dimensions = [3 1];
  % block.InputPort(2).Dimensions = 1;
 %   block.InputPort(2).DatatypeID  = 0;  % double
 %   block.InputPort(2).Complexity  = 'Real'; 
   % Override the output port properties.
   block.OutputPort(1).DatatypeID  = 0; % double
   block.OutputPort(1).Complexity  = 'Real';
+  block.OutputPort(1).Dimensions = [3,1];
+  block.OutputPort(1).SamplingMode = 'Sample';
+  
+  block.OutputPort(2).DatatypeID  = 0; % double
+  block.OutputPort(2).Complexity  = 'Real';
+  block.OutputPort(2).Dimensions = [3,1];
+  block.OutputPort(2).SamplingMode = 'Sample';
 %   block.OutputPort(2).DatatypeID  = 1; % double
 %   block.OutputPort(2).Complexity  = 'Real';
 
@@ -67,215 +90,25 @@ function setup(block)
   %
   %  [-1, 0]               : Inherited sample time
   %  [-2, 0]               : Variable sample time
-  block.SampleTimes = [-1 0];
-  
-  % -----------------------------------------------------------------
-  % Options
-  % -----------------------------------------------------------------
-  % Specify if Accelerator should use TLC or call back to the 
-  % MATLAB file
-  %block.SetAccelRunOnTLC(false);
-  
-  % Specify the block simStateCompliance. The allowed values are:
-  %    'UnknownSimState', < The default setting; warn and assume DefaultSimState
-  %    'DefaultSimState', < Same SimState as a built-in block
-  %    'HasNoSimState',   < No SimState
-  %    'CustomSimState',  < Has GetSimState and SetSimState methods
-  %    'DisallowSimState' < Errors out when saving or restoring the SimState
-  %block.SimStateCompliance = 'DefaultSimState';
-  
-  % -----------------------------------------------------------------
-  % The MATLAB S-function uses an internal registry for all
-  % block methods. You should register all relevant methods
-  % (optional and required) as illustrated below. You may choose
-  % any suitable name for the methods and implement these methods
-  % as local functions within the same file.
-  % -----------------------------------------------------------------
-   
-  % -----------------------------------------------------------------
-  % Register the methods called during update diagram/compilation.
-  % -----------------------------------------------------------------
-  
-  % 
-  % CheckParameters:
-  %   Functionality    : Called in order to allow validation of the
-  %                      block dialog parameters. You are 
-  %                      responsible for calling this method
-  %                      explicitly at the start of the setup method.
-  %   C-Mex counterpart: mdlCheckParameters
-  %
+  block.SampleTimes = [0.001 0];
+
   block.RegBlockMethod('CheckParameters', @CheckPrms);
 
-  %
-  % SetInputPortSamplingMode:
-  %   Functionality    : Check and set input and output port 
-  %                      attributes and specify whether the port is operating 
-  %                      in sample-based or frame-based mode
-  %   C-Mex counterpart: mdlSetInputPortFrameData.
-  %   (The DSP System Toolbox is required to set a port as frame-based)
-  %
-%  block.RegBlockMethod('SetInputPortSamplingMode', @SetInpPortFrameData);
-  
-  %
-  % SetInputPortDimensions:
-  %   Functionality    : Check and set the input and optionally the output
-  %                      port dimensions.
-  %   C-Mex counterpart: mdlSetInputPortDimensionInfo
-  %
-%  block.RegBlockMethod('SetInputPortDimensions', @SetInpPortDims);
-
-  %
-  % SetOutputPortDimensions:
-  %   Functionality    : Check and set the output and optionally the input
-  %                      port dimensions.
-  %   C-Mex counterpart: mdlSetOutputPortDimensionInfo
-  %
-  %block.RegBlockMethod('SetOutputPortDimensions', @SetOutPortDims);
-  
-  %
-  % SetInputPortDatatype:
-  %   Functionality    : Check and set the input and optionally the output
-  %                      port datatypes.
-  %   C-Mex counterpart: mdlSetInputPortDataType
-  %
- % block.RegBlockMethod('SetInputPortDataType', @SetInpPortDataType);
-  
-  %
-  % SetOutputPortDatatype:
-  %   Functionality    : Check and set the output and optionally the input
-  %                      port datatypes.
-  %   C-Mex counterpart: mdlSetOutputPortDataType
-  %
- % block.RegBlockMethod('SetOutputPortDataType', @SetOutPortDataType);
-  
-  %
-  % SetInputPortComplexSignal:
-  %   Functionality    : Check and set the input and optionally the output
-  %                      port complexity attributes.
-  %   C-Mex counterpart: mdlSetInputPortComplexSignal
-  %
-%  block.RegBlockMethod('SetInputPortComplexSignal', @SetInpPortComplexSig);
-  
-  %
-  % SetOutputPortComplexSignal:
-  %   Functionality    : Check and set the output and optionally the input
-  %                      port complexity attributes.
-  %   C-Mex counterpart: mdlSetOutputPortComplexSignal
-  %
- % block.RegBlockMethod('SetOutputPortComplexSignal', @SetOutPortComplexSig);
-  
-  %
-  % PostPropagationSetup:
-  %   Functionality    : Set up the work areas and the state variables. You can
-  %                      also register run-time methods here.
-  %   C-Mex counterpart: mdlSetWorkWidths
-  %
   block.RegBlockMethod('PostPropagationSetup', @DoPostPropSetup);
 
-  % -----------------------------------------------------------------
-  % Register methods called at run-time
-  % -----------------------------------------------------------------
-  
-  % 
-  % ProcessParameters:
-  %   Functionality    : Call to allow an update of run-time parameters.
-  %   C-Mex counterpart: mdlProcessParameters
-  %  
- % block.RegBlockMethod('ProcessParameters', @ProcessPrms);
-
-  % 
-  % InitializeConditions:
-  %   Functionality    : Call to initialize the state and the work
-  %                      area values.
-  %   C-Mex counterpart: mdlInitializeConditions
-  % 
   block.RegBlockMethod('InitializeConditions', @InitializeConditions);
-  
-  % 
-  % Start:
-  %   Functionality    : Call to initialize the state and the work
-  %                      area values.
-  %   C-Mex counterpart: mdlStart
-  %
+
   block.RegBlockMethod('Start', @Start);
 
-  % 
-  % Outputs:
-  %   Functionality    : Call to generate the block outputs during a
-  %                      simulation step.
-  %   C-Mex counterpart: mdlOutputs
-  %
   block.RegBlockMethod('Outputs', @Outputs);
 
-  % 
-  % Update:
-  %   Functionality    : Call to update the discrete states
-  %                      during a simulation step.
-  %   C-Mex counterpart: mdlUpdate
-  %
   block.RegBlockMethod('Update', @Update);
-
-  % 
-  % Derivatives:
-  %   Functionality    : Call to update the derivatives of the
-  %                      continuous states during a simulation step.
-  %   C-Mex counterpart: mdlDerivatives
-  %
- % block.RegBlockMethod('Derivatives', @Derivatives);
   
-  % 
-  % Projection:
-  %   Functionality    : Call to update the projections during a
-  %                      simulation step.
-  %   C-Mex counterpart: mdlProjections
-  %
- % block.RegBlockMethod('Projection', @Projection);
+ % block.RegBlockMethod('SetInputPortDimensions',  @SetInpPortDims);
   
-  % 
-  % SimStatusChange:
-  %   Functionality    : Call when simulation enters pause mode
-  %                      or leaves pause mode.
-  %   C-Mex counterpart: mdlSimStatusChange
-  %
-%  block.RegBlockMethod('SimStatusChange', @SimStatusChange);
+  block.RegBlockMethod('SetInputPortSamplingMode', @SetInpPortFrameData);
   
-  % 
-  % Terminate:
-  %   Functionality    : Call at the end of a simulation for cleanup.
-  %   C-Mex counterpart: mdlTerminate
-  %
-%  block.RegBlockMethod('Terminate', @Terminate);
-
-  %
-  % GetSimState:
-  %   Functionality    : Return the SimState of the block.
-  %   C-Mex counterpart: mdlGetSimState
-  %
- % block.RegBlockMethod('GetSimState', @GetSimState);
-  
-  %
-  % SetSimState:
-  %   Functionality    : Set the SimState of the block using a given value.
-  %   C-Mex counterpart: mdlSetSimState
-  %
- % block.RegBlockMethod('SetSimState', @SetSimState);
-
-  % -----------------------------------------------------------------
-  % Register the methods called during code generation.
-  % -----------------------------------------------------------------
-  
-  %
-  % WriteRTW:
-  %   Functionality    : Write specific information to model.rtw file.
-  %   C-Mex counterpart: mdlRTW
-  %
- % block.RegBlockMethod('WriteRTW', @WriteRTW);
-%endfunction
-
-% -------------------------------------------------------------------
-% The local functions below are provided to illustrate how you may implement
-% the various block methods listed above.
-% -------------------------------------------------------------------
+  %block.RegBlockMethod('SetInPortSamplingMode',  @SetInputPortSamplingMode);
 
 function CheckPrms(block)
   
@@ -284,63 +117,21 @@ function CheckPrms(block)
     me = MSLException(block.BlockHandle, message('Simulink:blocks:invalidParameter'));
     throw(me);
   end
+ 
+function SetInpPortFrameData(block, idx, fd)
   
-%endfunction
+  block.InputPort(idx).SamplingMode = fd;
+     block.OutputPort(1).SamplingMode = 'Sample';
+   block.OutputPort(2).SamplingMode = 'Sample';
 
-% function ProcessPrms(block)
-% 
-%   block.AutoUpdateRuntimePrms;
-%  
-%endfunction
-
-% function SetInpPortFrameData(block, idx, fd)
-%   
-%   block.InputPort(idx).SamplingMode = fd;
-%   block.OutputPort(1).SamplingMode  = fd;
-%   
-%endfunction
 
 % function SetInpPortDims(block, idx, di)
-%   
+%   % Set the port dimensions for forward propagation of the dimensions.
 %   block.InputPort(idx).Dimensions = di;
-%   block.OutputPort(1).Dimensions  = di;
-% 
-% %endfunction
-% 
-% function SetOutPortDims(block, idx, di)
-%   
-%   block.OutputPort(idx).Dimensions = di;
-%   block.InputPort(1).Dimensions    = di;
-% 
-% %endfunction
-% 
-% function SetInpPortDataType(block, idx, dt)
-%   
-%   block.InputPort(idx).DataTypeID = dt;
-%   block.OutputPort(1).DataTypeID  = dt;
-% 
-% %endfunction
-%   
-% function SetOutPortDataType(block, idx, dt)
-% 
-%   block.OutputPort(idx).DataTypeID  = dt;
-%   block.InputPort(1).DataTypeID     = dt;
-% 
-% %endfunction  
-% 
-% function SetInpPortComplexSig(block, idx, c)
-%   
-%   block.InputPort(idx).Complexity = c;
-%   block.OutputPort(1).Complexity  = c;
-% 
-% %endfunction 
-%   
-% function SetOutPortComplexSig(block, idx, c)
-% 
-%   block.OutputPort(idx).Complexity = c;
-%   block.InputPort(1).Complexity    = c;
-
-%endfunction 
+%   %block.OutputPort(1).Dimensions  = di;
+  
+%function SetInPortSamplingMode()
+        
     
 function DoPostPropSetup(block)
   block.NumDworks = 2;
@@ -369,78 +160,134 @@ block.Dwork(1).Data = 1;
 
 block.Dwork(2).Data = 1;
 %block.ContStates.Data = 1;
+%     L(1) = Link('revolute','d',0.01,'a', 0, 'alpha', pi/2);
+%     %第二关节以大地坐标系Y为转轴(赋值为0时指向X正向)
+%     L(2) = Link('revolute','d',0.01,'a',0.06, 'alpha', 0);
+%     L(3) = Link('revolute', 'd', 0.01, 'a', 0.1, 'alpha', pi);
+%     L(4) = Link('revolute', 'd', 0.01, 'a', 0.3, 'alpha', pi);
 
 %endfunction
 
 function Start(block)
 
-%   block.Dwork(1).Data = 0;
-%   block.Dwork(2).Data = uint32(1); 
-   
-%endfunction
-
-% function WriteRTW(block)
-%   
-%    block.WriteRTWParam('matrix', 'M',    [1 2; 3 4]);
-%    block.WriteRTWParam('string', 'Mode', 'Auto');
-%    
-%endfunction
 
 function Outputs(block)
-  a = 0;
-  b = a;
-block.Dwork(1).Data
- % block.OutputPort(1).Data = block.Dwork(1).Data + block.InputPort(1).Data;
- block.OutputPort(1).Data = block.IutputPort(1).Data * [1,0,0]
-  
-%endfunction
 
+
+%     persistent robot;
+%     robot = SerialLink(L,'name','robot');
+    %pos = [block.InputPort(1).Data;1];
+    %速度
+    pos =   block.InputPort(1).Data;
+    pos = pos'
+    %w = [block.InputPort(1).Data;1];
+    %角速度
+    w = block.InputPort(2).Data;
+    w = w'
+    %a = [block.InputPort(1).Data;1]; 
+    %加速度
+    a = block.InputPort(3).Data;
+    a = a'
+    %机器人速度
+    vWater = block.InputPort(4).Data;
+   
+    %水密度
+    pho = 1000;    
+    zi = [0;0;1];
+    xi = [1;0;0];
+    yi = [0;1;0];
+    pos
+    %获取每个关节的SE3矩阵（转移矩阵）
+   % [endPointtamp,SEList] = robot.fkine(pos/pi*180,'deg');
+   robot  = ini(pos);
+   [endPointtamp,SEList] = robot.fkine(pos/pi*180,'deg');
+    %末关节原点在师姐坐标系下的表示
+    endPoint = SEList(4)*[0,0,0]';
+    %雅各比矩阵
+    J4 = robot.jacob0(pos);
+    
+    %v = J4*w';
+    %本地坐标系下重心的位置
+    %计算每速度的累加和
+    %用来存储每个单元的速度的和
+    U = 0;
+    %水流流速
+   % vWater = [0;0;0];
+    %vWater = [0;0*sin(t);0*cos(t)];
+    %用来存储每个单元产生的力矩
+    M_tol = 0;
+    F_tol = 0;
+    loc_M = 0;
+    loc_F = 0;
+    %每个微元的长度
+    dx = 0.01;
+    %通过雅各比矩阵计算参考系的速度
+    endVel = J4*w';
+    %翼离转动关节的距离
+    bais = 0.09;
+    locvWater = [dot(vWater,SEList(4)*xi-endPoint);dot(vWater,SEList(4)*yi-endPoint);dot(vWater,SEList(4)*zi-endPoint)];
+    
+    for k = 0:dx:0.12
+    %计算每个点在本地坐标系中的值
+        %翼的方向在末关节坐标系中是沿着x方向的
+        %y轴垂直于翼的表面
+        locPoint_x = k + bais;
+        
+        locV = endVel(1:3);
+        locPoint = [locPoint_x;0;0];
+        wolPoint = SEList(4)*locPoint;
+        %到了这一步速度时以本地坐标系表示的
+        %locV = [dot(locV,SEList(4)*xi-endPoint);dot(locV,SEList(4)*yi-endPoint);dot(locV,SEList(4)*zi-endPoint)];
+        locV = [0;dot(locV,SEList(4)*yi-endPoint);dot(locV,SEList(4)*zi-endPoint)];
+        %locV = [0;dot(locV,SEList(4)*yi);dot(locV,SEList(4)*zi)];
+        locV_tamp = [w(4)*locPoint_x*yi;1];
+        
+      % T1 = trotz(pos(4)/pi*180);
+       %locV_tamp = T1 * locV_tamp;
+        %得到当前微元的速度
+        locV_tamp = locV_tamp(1:3) + locV + locvWater;
+        %locV_tamp = locV_tamp(1:3) + locV
+        %求得速率
+        U = norm(locV_tamp);
+        %求得攻角alpha
+        %cosA = dot(locV_tamp,zi)/norm(U);
+        %alpha = acos(cosA)
+        alpha = atan(locV_tamp(3)/locV_tamp(2));
+        %alpha = atan(locV_tamp(3)/abs(locV_tamp(2)));
+        
+        
+        %！！！！！！！！！！！攻角该如何就是那这部分在好好查一查！！！！！！！！！！！！！！
+        % alpha = abs(alpha);
+        
+        %wolPoint = SEList(4)*locPoint;
+        %relw = w(4)*zi;
+        %vtamp = cross(locPoint,relw') + v(1:3) + cross(wolPoint',v(4:6));
+        %U = (dot(vtamp',SEList(4)*yi))^2+(dot(vtamp',SEList(4)*zi))^2;
+        %计算两个方向的合力
+        %计算升力并向量化
+        L = 0.5.*pho*U^2.*zi*sin(2*alpha)*0.08*dx*CL(alpha);
+%          L = 0.5.*pho*U^2.*zi*sin(2*alpha)*0.08*dx;
+        %计算阻力
+        F = 0.5*pho*yi*U^2*cos(1-cos(2*alpha))*0.08*dx*CD(alpha);
+%         F = 0.5*pho*yi*U^2*cos(1-cos(2*alpha))*0.08*dx;
+        %附加质量力
+        F_m = pi*pho*locV_tamp*0.08*0.08/4*dx;
+        %计算力在大地坐标系下的表示
+        wol_F = SEList(4) * (F+L+F_m)-endPoint;
+        %计算合力矩
+        M_tol = M_tol + cross(wolPoint,wol_F);
+        %计算合力
+        F_tol = F_tol + wol_F;
+        
+    end
+    %[tau,wbase]=robot.rne(pos,w,a,'gravity',gravity);
+    %记得重新处理重力的影响
+   %F_tol = F_tol + wbase(1:3);
+    %M_tol = M_tol + wbase(4:6);   
+block.OutputPort(1).Data = F_tol;
+block.OutputPort(2).Data = M_tol;
 function Update(block)
   
-block.Dwork(2).Data
+%block.Dwork(2).Data
 %   block.Dwork(1).Data = block.InputPort(1).Data;
   
-%endfunction
-
-% function Derivatives(block)
-% 
-% block.Derivatives.Data = 2*block.ContStates.Data;
-
-%endfunction
-
-% function Projection(block)
-% 
-% states = block.ContStates.Data;
-% block.ContStates.Data = states+eps; 
-
-%endfunction
-
-% function SimStatusChange(block, s)
-%   
-%   block.Dwork(2).Data = block.Dwork(2).Data+1;    
-% 
-%   if s == 0
-%     disp('Pause in simulation.');
-%   elseif s == 1
-%     disp('Resume simulation.');
-%   end
-%   
-%endfunction
-    
-% function Terminate(block)
-% 
-% disp(['Terminating the block with handle ' num2str(block.BlockHandle) '.']);
-
-%endfunction
- 
-% function outSimState = GetSimState(block)
-% 
-% outSimState = block.Dwork(1).Data;
-% 
-% %endfunction
-% 
-% function SetSimState(block, inSimState)
-% 
-% block.Dwork(1).Data = inSimState;
-% 
-% %endfunction
