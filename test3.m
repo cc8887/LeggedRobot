@@ -56,10 +56,12 @@ zi = [0;0;1];
 xi = [1;0;0];
 yi = [0;1;0];
 T = 2;
-ddt = 0.01;
+ddt = 0.1;
 ddphi = 0.01;
 F_av = [];
 L_av = [];
+%输入功率
+P_in = 0;
 % figList1 = zeros(T/ddt+1,1/ddphi+1);
 % figList2 = zeros(T/ddt+1,1/ddphi+1);
 % figList3 = zeros(T/ddt+1,1/ddphi+1);
@@ -67,8 +69,9 @@ L_av = [];
 figList1 = zeros(1/ddphi+1,T/ddt+1);
 figList2 = zeros(1/ddphi+1,T/ddt+1);
 figList3 = zeros(1/ddphi+1,T/ddt+1);
+figList4 = zeros(1/ddphi+1,1);
 for ii = 0:ddphi:1
-
+    P_in = 0;
     for t = 0:ddt:T
        [pos(1),w(1),a(1)] = tra(pi/4,t,T);
         %pos(1) = pos(1) + pi/2;
@@ -166,9 +169,9 @@ for ii = 0:ddphi:1
 
 
         gravity = [0,0,0];
-         vWater = [0;0;0];
+         vWater = [1;0;0];
        [wolPoint,wolV,F_tol,M_tol,alpha] = legDy(robot,pos,w,a,gravity,vWater);
-
+       [tau,wbase]=robot.rne(pos,w,a,'gravity',[0;0;0],'fext',[F_tol',M_tol']);
         %记得重新处理重力的影响
     %     F_tol = F_tol + wbase(1:3);
     %     M_tol = M_tol + wbase(4:6);
@@ -179,6 +182,8 @@ for ii = 0:ddphi:1
       % figList2(round(t/ddt)+1) = U;
     %      figList3(round(t/ddt)+1) = norm(F);
         figList3(round(ii/ddphi)+1,round(t/ddt)+1) = F_tol(2);
+        
+        P_in = tau*w'*ddt + P_in;
      %   figList3(round(t/ddt)+1) = F_tol(3);
     %      figure(1);
     %      plot(t,F_tol(1),'o');
@@ -198,6 +203,7 @@ for ii = 0:ddphi:1
     plotStart = 1;
     F_av = [F_av;mean(figList1(round(ii/ddphi)+1,plotStart:end))];
     L_av = [L_av;mean(figList3(round(ii/ddphi)+1,plotStart:end))];
+    figList4(round(ii/ddphi)+1) = (mean(figList1(round(ii/ddphi)+1,plotStart:end)))./(P_in/T);
 %     for tList = 0:ddt:T;
 %         figure(1);
 %         plot3(ii,tList,figList1(round(tList/ddt)+1));
@@ -211,6 +217,7 @@ for ii = 0:ddphi:1
 %     end
  %   tamp_av = [tamp_av;mean(figList1(plotStart:end))];
 end
+
     %从哪个点开始画
 % plotStart = 1;
  tList = 0:ddt:T;
@@ -228,9 +235,11 @@ mesh(tList,iii,figList2);
 % figure(3);
 % plot(tList(plotStart:end)-0.5,figList3(plotStart:end));
 % hold on
-figure
+figure(4)
 tt = 0:ddphi:1;
 subplot(2,1,1)
 plot(iii,F_av);
 subplot(2,1,2)
 plot(iii,L_av);
+figure(5);
+plot(iii,figList4);
