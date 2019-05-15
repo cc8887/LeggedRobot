@@ -62,6 +62,8 @@ F_av = [];
 L_av = [];
 %输入功率
 P_in = 0;
+%输出功率
+P_out = 0;
 % figList1 = zeros(T/ddt+1,1/ddphi+1);
 % figList2 = zeros(T/ddt+1,1/ddphi+1);
 % figList3 = zeros(T/ddt+1,1/ddphi+1);
@@ -70,12 +72,14 @@ figList1 = zeros(1/ddphi+1,T/ddt+1);
 figList2 = zeros(1/ddphi+1,T/ddt+1);
 figList3 = zeros(1/ddphi+1,T/ddt+1);
 figList4 = zeros(1/ddphi+1,1);
+figList5 = zeros(1/ddphi+1,1);
 for ii = 0:ddphi:1
     P_in = 0;
+    P_out = 0;
     for t = 0:ddt:T
        [pos(1),w(1),a(1)] = tra(pi/4,t,T);
         %pos(1) = pos(1) + pi/2;
-         [pos(4),w(4),a(4)] = tra(pi/4,t-ii*T,T);
+       [pos(4),w(4),a(4)] = tra(pi/4,t-ii*T,T);
 
       % [pos(4),w(4),a(4)] = tra(pi/4,t-0.5,1);
     %     [pos(2),w(2),a(2)] = tra(pi/10,t,2);
@@ -183,7 +187,8 @@ for ii = 0:ddphi:1
     %      figList3(round(t/ddt)+1) = norm(F);
         figList3(round(ii/ddphi)+1,round(t/ddt)+1) = F_tol(2);
         
-        P_in = tau*w'*ddt + P_in;
+        P_in = tau*w' * ddt + P_in;
+        P_out = wolV' * F_tol*ddt + P_out;
      %   figList3(round(t/ddt)+1) = F_tol(3);
     %      figure(1);
     %      plot(t,F_tol(1),'o');
@@ -204,7 +209,9 @@ for ii = 0:ddphi:1
     F_av = [F_av;mean(figList1(round(ii/ddphi)+1,plotStart:end))];
     L_av = [L_av;mean(figList3(round(ii/ddphi)+1,plotStart:end))];
     figList4(round(ii/ddphi)+1) = (mean(figList1(round(ii/ddphi)+1,plotStart:end)))./(P_in/T);
-%     for tList = 0:ddt:T;
+    figList5(round(ii/ddphi)+1) = P_out/P_in/T;
+    
+    %     for tList = 0:ddt:T;
 %         figure(1);
 %         plot3(ii,tList,figList1(round(tList/ddt)+1));
 %         hold on;
@@ -224,14 +231,17 @@ end
  iii = 0:ddphi:1;
  figure(1)
  mesh(tList,iii,figList1);
+ xlabel('推力')
  figure(3)
  mesh(tList,iii,figList3);
+ xlabel('升力')
 % figure(2);
 % plot(tList(plotStart:end)-0.5,figList1(plotStart:end));
 % hold on;
 
 figure(2);
 mesh(tList,iii,figList2);
+xlabel('攻角')
 % figure(3);
 % plot(tList(plotStart:end)-0.5,figList3(plotStart:end));
 % hold on
@@ -239,7 +249,12 @@ figure(4)
 tt = 0:ddphi:1;
 subplot(2,1,1)
 plot(iii,F_av);
+xlabel('推力');
 subplot(2,1,2)
 plot(iii,L_av);
+xlabel('升力');
 figure(5);
+subplot(2,1,1)
 plot(iii,figList4);
+subplot(2,1,2)
+plot(iii,figList5);
