@@ -33,8 +33,8 @@ function [wolPoint,wolV,F_tol,M_tol,alpha] = legDy(robot,pos,w,a,gravity,vWater)
     endVel = J4*w';
     %翼离转动关节的距离
     bais = 0.09;
-    locvWater = [dot(vWater,SEList(4)*xi);dot(vWater,SEList(4)*yi);dot(vWater,SEList(4)*zi)];
-    
+    %locvWater = [dot(vWater,SEList(4)*xi-endPoint);dot(vWater,SEList(4)*yi-endPoint);dot(vWater,SEList(4)*zi-endPoint)];
+    locvWater = SEList(4).t2r\vWater;
     for k = 0:dx:0.12
     %计算每个点在本地坐标系中的值
         %翼的方向在末关节坐标系中是沿着x方向的
