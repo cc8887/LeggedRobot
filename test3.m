@@ -43,7 +43,7 @@ L(1) = Link('revolute','d',0.01,'a', 0, 'alpha', pi/2,'m',0);
 %第二关节以大地坐标系Y为转轴(赋值为0时指向X正向)
 L(2) = Link('revolute','d',0.01,'a',0.06, 'alpha', 0,'m',0.25,'r',cog1,'I',ra1);
 L(3) = Link('revolute', 'd', 0.01, 'a', 0.1, 'alpha', pi,'m',0.18,'r',cog2,'I',ra2);
-L(4) = Link('revolute', 'd', 0.01, 'a', 0.3, 'alpha', pi,'m',0.13,'r',cog3,'I',ra3);
+L(4) = Link('revolute', 'd', 0.01, 'a', 0, 'alpha', pi,'m',0.13,'r',cog3,'I',ra3);
 robot=SerialLink(L,'name','robot');
 
 
@@ -70,10 +70,10 @@ for ii = 0:ddphi:1
     P_out = 0;
     for t = 0:ddt:T
        [pos(1),w(1),a(1)] = tra(pi/4,t,T);
-        %pos(1) = pos(1) + pi/2;
+
        [pos(4),w(4),a(4)] = tra(pi/4,t-ii*T,T);
-        gravity = [0,0,0];
-         vWater = [10;0;0];
+       gravity = [0,0,0];
+       vWater = [0;0;0];
        [wolPoint,wolV,F_tol,M_tol,alpha] = legDy(robot,pos,w,a,gravity,vWater);
        [tau,wbase]=robot.rne(pos,w,a,'gravity',[0;0;0],'fext',[F_tol',M_tol']);
         %记得重新处理重力的影响
@@ -84,15 +84,15 @@ for ii = 0:ddphi:1
 
        figList3(round(ii/ddphi)+1,round(t/ddt)+1) = F_tol(2);
         
-       P_in = tau*w' * ddt + P_in;
-       P_out = wolV' * F_tol*ddt + P_out;
+       P_in = tau * w' * ddt + P_in;
+       P_out = wolV' * F_tol * ddt + P_out;
 
     end
     plotStart = 1;
     F_av = [F_av;mean(figList1(round(ii/ddphi)+1,plotStart:end))];
     L_av = [L_av;mean(figList3(round(ii/ddphi)+1,plotStart:end))];
-    figList4(round(ii/ddphi)+1) = (mean(figList1(round(ii/ddphi)+1,plotStart:end)))./(P_in/T);
-    figList5(round(ii/ddphi)+1) = P_out/P_in/T;
+    figList4(round(ii/ddphi)+1) = abs((mean(figList1(round(ii/ddphi)+1,plotStart:end)))./(P_in/T));
+    figList5(round(ii/ddphi)+1) = abs(P_out/P_in/T);
 
 end
 
@@ -127,5 +127,7 @@ xlabel('升力');
 figure(5);
 subplot(2,1,1)
 plot(iii,figList4);
+axis([0 1 0 0.5])
 subplot(2,1,2)
 plot(iii,figList5);
+axis([0 1 0 0.5])
