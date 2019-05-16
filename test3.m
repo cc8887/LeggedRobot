@@ -53,9 +53,9 @@ xi = [1;0;0];
 yi = [0;1;0];
 T = 2;
 ddt = 0.1;
-ddphi = 0.01;
-F_av = [];
-L_av = [];
+ddphi = 0.1;
+F_av = zeros(1/ddphi+1,1/ddphi+1);
+L_av = zeros(1/ddphi+1,1/ddphi+1);
 %输入功率
 P_in = 0;
 %输出功率
@@ -63,15 +63,17 @@ P_out = 0;
 figList1 = zeros(1/ddphi+1,T/ddt+1);
 figList2 = zeros(1/ddphi+1,T/ddt+1);
 figList3 = zeros(1/ddphi+1,T/ddt+1);
-figList4 = zeros(1/ddphi+1,1);
-figList5 = zeros(1/ddphi+1,1);
+%figList4 = zeros(1/ddphi+1,1);
+figList5 = zeros(1/ddphi+1,1/ddphi+1);
+
+for iiii = 0:ddphi:1
 for ii = 0:ddphi:1
     P_in = 0;
     P_out = 0;
     for t = 0:ddt:T
        [pos(1),w(1),a(1)] = tra(pi/4,t,T);
 
-       [pos(4),w(4),a(4)] = tra(pi/4,t-ii*T,T);
+       [pos(4),w(4),a(4)] = tra(pi/2*ii,t-iiii*T,T);
        gravity = [0,0,0];
        vWater = [0;0;0];
        [wolPoint,wolV,F_tol,M_tol,alpha] = legDy(robot,pos,w,a,gravity,vWater);
@@ -89,11 +91,12 @@ for ii = 0:ddphi:1
 
     end
     plotStart = 1;
-    F_av = [F_av;mean(figList1(round(ii/ddphi)+1,plotStart:end))];
-    L_av = [L_av;mean(figList3(round(ii/ddphi)+1,plotStart:end))];
-    figList4(round(ii/ddphi)+1) = abs((mean(figList1(round(ii/ddphi)+1,plotStart:end)))./(P_in/T));
-    figList5(round(ii/ddphi)+1) = abs(P_out/P_in/T);
+    F_av(round(ii/ddphi)+1,1/ddphi+1) = mean(figList1(round(ii/ddphi)+1,plotStart:end));
+    L_av(round(ii/ddphi)+1,1/ddphi+1) = mean(figList3(round(ii/ddphi)+1,plotStart:end));
+ %   figList4(round(ii/ddphi)+1) = abs((mean(figList1(round(ii/ddphi)+1,plotStart:end)))./(P_in/T));
+    figList5(round(ii/ddphi)+1,round(iiii/ddphi)+1) = abs(P_out/P_in/T);
 
+end
 end
 
     %从哪个点开始画
@@ -119,15 +122,17 @@ xlabel('攻角')
 figure(4)
 tt = 0:ddphi:1;
 subplot(2,1,1)
-plot(iii,F_av);
+mesh(iii,iii,F_av);
 xlabel('推力');
 subplot(2,1,2)
-plot(iii,L_av);
+mesh(iii,iii,L_av);
 xlabel('升力');
 figure(5);
-subplot(2,1,1)
-plot(iii,figList4);
-axis([0 1 0 0.5])
-subplot(2,1,2)
-plot(iii,figList5);
-axis([0 1 0 0.5])
+mesh(iii*T,iii*pi/2,figList5);
+axis([0 T 0 pi/2 0 1])
+% subplot(2,1,1)
+% plot(iii,figList4);
+%axis([0 1 0 0.5])
+% subplot(2,1,2)
+% plot(iii,figList5);
+%axis([0 1 0 0.5])
