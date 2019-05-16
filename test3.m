@@ -122,10 +122,10 @@ xlabel('¹¥½Ç')
 figure(4)
 tt = 0:ddphi:1;
 subplot(2,1,1)
-mesh(iii,iii,-F_av);
+mesh(iii*T,iii*pi/2,-F_av);
 xlabel('ÍÆÁ¦');
 subplot(2,1,2)
-mesh(iii,iii,-L_av);
+mesh(iii*T,iii*pi/2,-L_av);
 xlabel('ÉýÁ¦');
 figure(5);
 mesh(iii*T,iii*pi/2,figList5);
