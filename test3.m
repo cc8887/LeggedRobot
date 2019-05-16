@@ -91,8 +91,8 @@ for ii = 0:ddphi:1
 
     end
     plotStart = 1;
-    F_av(round(ii/ddphi)+1,1/ddphi+1) = mean(figList1(round(ii/ddphi)+1,plotStart:end));
-    L_av(round(ii/ddphi)+1,1/ddphi+1) = mean(figList3(round(ii/ddphi)+1,plotStart:end));
+    F_av(round(ii/ddphi)+1,iiii/ddphi+1) = mean(figList1(round(ii/ddphi)+1,plotStart:end));
+    L_av(round(ii/ddphi)+1,iiii/ddphi+1) = mean(figList3(round(ii/ddphi)+1,plotStart:end));
  %   figList4(round(ii/ddphi)+1) = abs((mean(figList1(round(ii/ddphi)+1,plotStart:end)))./(P_in/T));
     figList5(round(ii/ddphi)+1,round(iiii/ddphi)+1) = abs(P_out/P_in/T);
 
@@ -122,10 +122,10 @@ xlabel('¹¥½Ç')
 figure(4)
 tt = 0:ddphi:1;
 subplot(2,1,1)
-mesh(iii,iii,F_av);
+mesh(iii,iii,-F_av);
 xlabel('ÍÆÁ¦');
 subplot(2,1,2)
-mesh(iii,iii,L_av);
+mesh(iii,iii,-L_av);
 xlabel('ÉýÁ¦');
 figure(5);
 mesh(iii*T,iii*pi/2,figList5);
