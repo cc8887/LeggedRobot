@@ -34,8 +34,8 @@ setup(block);
 function setup(block)
 
   % Register the number of ports.
-  block.NumInputPorts  = 1;
-  block.NumOutputPorts = 1;
+  block.NumInputPorts  = 2;
+  block.NumOutputPorts = 2;
   
   % Set up the port properties to be inherited or dynamic.
   block.SetPreCompInpPortInfoToDynamic;
@@ -45,6 +45,9 @@ function setup(block)
   block.InputPort(1).DatatypeID  = 0;  % double
   block.InputPort(1).Complexity  = 'Real';
   block.InputPort(1).Dimensions = [3 1];
+    block.InputPort(2).DatatypeID  = 0;  % double
+  block.InputPort(2).Complexity  = 'Real';
+  block.InputPort(2).Dimensions = [3 1];
   
 %   block.InputPort(2).DatatypeID  = 0;  % double
 %   block.InputPort(2).Complexity  = 'Real';
@@ -69,6 +72,10 @@ function setup(block)
   block.OutputPort(1).Complexity  = 'Real';
   block.OutputPort(1).Dimensions = [3,1];
   block.OutputPort(1).SamplingMode = 'Sample';
+    block.OutputPort(2).DatatypeID  = 0; % double
+  block.OutputPort(2).Complexity  = 'Real';
+  block.OutputPort(2).Dimensions = [3,1];
+  block.OutputPort(2).SamplingMode = 'Sample';
   
 %   block.OutputPort(2).DatatypeID  = 0; % double
 %   block.OutputPort(2).Complexity  = 'Real';
@@ -122,7 +129,7 @@ function SetInpPortFrameData(block, idx, fd)
   
   block.InputPort(idx).SamplingMode = fd;
      block.OutputPort(1).SamplingMode = 'Sample';
-   block.OutputPort(2).SamplingMode = 'Sample';
+  % block.OutputPort(2).SamplingMode = 'Sample';
 
 
 % function SetInpPortDims(block, idx, di)
@@ -182,13 +189,18 @@ function Outputs(block)
     C_Dy = 1;
     C_Dz = 1;
     pho = 1000;
-    S_x = 0.09;
-    S_y = 0.09;
-    S_z = 0.16;
+    S_x = 0.03;
+    S_y = 0.02;
+    S_z = 0.07;
+   % K_x = 0.001;
+    K_y = 0.0003;
+    K_z = 0.0007;
     v = block.InputPort(1).Data;
-    v = 0.5.*pho.*[C_Dv(1)*abs(v(1))]
-block.OutputPort(1).Data = F_tol;
-block.OutputPort(2).Data = M_tol;
+    w = block.InputPort(2).Data;
+    F = -0.5.*pho.*[C_Dx*S_x*v(1)*abs(v(1));C_Dy*S_y*v(2)*abs(v(2));C_Dz*S_z*v(3)*abs(v(3))];
+    M = -[K_x;K_y;K_z].*abs(w).*w;
+    block.OutputPort(1).Data = F;
+    block.OutputPort(2).Data = M;
 function Update(block)
   
 %block.Dwork(2).Data

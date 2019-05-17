@@ -179,15 +179,15 @@ function Outputs(block)
     %pos = [block.InputPort(1).Data;1];
     %速度
     pos =   block.InputPort(1).Data;
-    pos = pos'
+    pos = pos';
     %w = [block.InputPort(1).Data;1];
     %角速度
     w = block.InputPort(2).Data;
-    w = w'
+    w = w';
     %a = [block.InputPort(1).Data;1]; 
     %加速度
     a = block.InputPort(3).Data;
-    a = a'
+    a = a';
     %机器人速度
     vWater = block.InputPort(4).Data;
    
@@ -196,7 +196,7 @@ function Outputs(block)
     zi = [0;0;1];
     xi = [1;0;0];
     yi = [0;1;0];
-    pos
+
     %获取每个关节的SE3矩阵（转移矩阵）
    % [endPointtamp,SEList] = robot.fkine(pos/pi*180,'deg');
    robot  = ini(pos);

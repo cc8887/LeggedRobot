@@ -34,7 +34,7 @@ setup(block);
 function setup(block)
 
   % Register the number of ports.
-  block.NumInputPorts  = 1;
+  block.NumInputPorts  = 4;
   block.NumOutputPorts = 2;
   
   % Set up the port properties to be inherited or dynamic.
@@ -178,21 +178,25 @@ function Outputs(block)
 %     robot = SerialLink(L,'name','robot');
     %pos = [block.InputPort(1).Data;1];
     %速度
-    pos =   block.OutputPort(1).Data = F_tol;;
+    pos =   block.InputPort(1).Data;
+    pos = pos';
     %w = [block.InputPort(1).Data;1];
     %角速度
-    w = pos;
+    w = block.InputPort(2).Data;
+    w = w';
     %a = [block.InputPort(1).Data;1]; 
     %加速度
-    a = pos;
+    a = block.InputPort(3).Data;
+    a = a';
     %机器人速度
-    vWater = [0;0;0];
+    vWater = block.InputPort(4).Data;
    
     %水密度
     pho = 1000;    
     zi = [0;0;1];
     xi = [1;0;0];
     yi = [0;1;0];
+    pos
     %获取每个关节的SE3矩阵（转移矩阵）
    % [endPointtamp,SEList] = robot.fkine(pos/pi*180,'deg');
    robot  = ini(pos);

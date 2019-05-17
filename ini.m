@@ -9,6 +9,6 @@ function  robot = ini(pos)
         L(4) = Link('revolute', 'd', 0.01, 'a', 0.3, 'alpha', pi);
         robot1 = SerialLink(L,'name','robot');
     end
-    robot = robot1
+    robot = robot1;
 % [endPointtamp,SEList] = robot.fkine(pos/pi*180,'deg');
 end

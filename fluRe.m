@@ -34,8 +34,8 @@ setup(block);
 function setup(block)
 
   % Register the number of ports.
-  block.NumInputPorts  = 1;
-  block.NumOutputPorts = 1;
+  block.NumInputPorts  = 2;
+  block.NumOutputPorts = 2;
   
   % Set up the port properties to be inherited or dynamic.
   block.SetPreCompInpPortInfoToDynamic;
@@ -45,6 +45,9 @@ function setup(block)
   block.InputPort(1).DatatypeID  = 0;  % double
   block.InputPort(1).Complexity  = 'Real';
   block.InputPort(1).Dimensions = [3 1];
+    block.InputPort(2).DatatypeID  = 0;  % double
+  block.InputPort(2).Complexity  = 'Real';
+  block.InputPort(2).Dimensions = [3 1];
   
 %   block.InputPort(2).DatatypeID  = 0;  % double
 %   block.InputPort(2).Complexity  = 'Real';
@@ -69,6 +72,10 @@ function setup(block)
   block.OutputPort(1).Complexity  = 'Real';
   block.OutputPort(1).Dimensions = [3,1];
   block.OutputPort(1).SamplingMode = 'Sample';
+    block.OutputPort(2).DatatypeID  = 0; % double
+  block.OutputPort(2).Complexity  = 'Real';
+  block.OutputPort(2).Dimensions = [3,1];
+  block.OutputPort(2).SamplingMode = 'Sample';
   
 %   block.OutputPort(2).DatatypeID  = 0; % double
 %   block.OutputPort(2).Complexity  = 'Real';
@@ -185,9 +192,18 @@ function Outputs(block)
     S_x = 0.03;
     S_y = 0.02;
     S_z = 0.07;
+    K_x = 0.001;
+   %K_x = 0.1;
+    K_y = 0.0003;
+    %K_y = 0.3;
+    K_z = 0.0007;
+    %K_z = 0.7;
     v = block.InputPort(1).Data;
-    F = 0.5.*pho.*[C_Dx*S_x*v(1)*abs(v(1));C_Dy*S_y*v(2)*abs(v(2));C_Dz*S_z*v(3)*abs(v(3))];
-block.OutputPort(1).Data = F;
+    w = block.InputPort(2).Data;
+    F = -0.5.*pho.*[C_Dx*S_x*v(1)*abs(v(1));C_Dy*S_y*v(2)*abs(v(2));C_Dz*S_z*v(3)*abs(v(3))];
+    M = -[K_x;K_y;K_z].*abs(w).*w;
+    block.OutputPort(1).Data = F;
+    block.OutputPort(2).Data = M;
 function Update(block)
   
 %block.Dwork(2).Data
