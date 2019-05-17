@@ -225,8 +225,8 @@ function Outputs(block)
     endVel = J4*w';
     %翼离转动关节的距离
     bais = 0.09;
-    locvWater = [dot(vWater,SEList(4)*xi-endPoint);dot(vWater,SEList(4)*yi-endPoint);dot(vWater,SEList(4)*zi-endPoint)];
-    
+    %locvWater = [dot(vWater,SEList(4)*xi-endPoint);dot(vWater,SEList(4)*yi-endPoint);dot(vWater,SEList(4)*zi-endPoint)];
+    locvWater = SEList(4).t2r\vWater;
     for k = 0:dx:0.12
     %计算每个点在本地坐标系中的值
         %翼的方向在末关节坐标系中是沿着x方向的
@@ -283,9 +283,11 @@ function Outputs(block)
     %[tau,wbase]=robot.rne(pos,w,a,'gravity',gravity);
     %记得重新处理重力的影响
    %F_tol = F_tol + wbase(1:3);
-    %M_tol = M_tol + wbase(4:6);   
-block.OutputPort(1).Data = F_tol;
-block.OutputPort(2).Data = M_tol;
+    %M_tol = M_tol + wbase(4:6);  
+    F_tol(3) = 0;
+    M_tol(3) = 0;
+    block.OutputPort(1).Data = F_tol;
+    block.OutputPort(2).Data = M_tol;
 function Update(block)
   
 %block.Dwork(2).Data

@@ -196,7 +196,7 @@ function Outputs(block)
     zi = [0;0;1];
     xi = [1;0;0];
     yi = [0;1;0];
-    pos
+
     %获取每个关节的SE3矩阵（转移矩阵）
    % [endPointtamp,SEList] = robot.fkine(pos/pi*180,'deg');
    robot  = ini(pos);
@@ -225,8 +225,8 @@ function Outputs(block)
     endVel = J4*w';
     %翼离转动关节的距离
     bais = 0.09;
-    locvWater = [dot(vWater,SEList(4)*xi-endPoint);dot(vWater,SEList(4)*yi-endPoint);dot(vWater,SEList(4)*zi-endPoint)];
-    
+    %locvWater = [dot(vWater,SEList(4)*xi-endPoint);dot(vWater,SEList(4)*yi-endPoint);dot(vWater,SEList(4)*zi-endPoint)];
+    locvWater = SEList(4).t2r\vWater;
     for k = 0:dx:0.12
     %计算每个点在本地坐标系中的值
         %翼的方向在末关节坐标系中是沿着x方向的
