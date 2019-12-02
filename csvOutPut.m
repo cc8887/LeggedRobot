@@ -39,11 +39,11 @@ zero31 = zeros(3,1);
 %通过设置alpha的值来设置关节是否垂直
 %r的值表示该link所受的重力的值 
 %第一关节是以大地坐标系Z轴为转轴的
-L(1) = Link('revolute','d',0.01,'a', 0, 'alpha', pi/2,'m',0);
+L(1) = Link('revolute','d',0.0,'a', 0, 'alpha', pi/2,'m',0);
 %第二关节以大地坐标系Y为转轴(赋值为0时指向X正向)
-L(2) = Link('revolute','d',0.01,'a',0.06, 'alpha', 0,'m',0.25,'r',cog1,'I',ra1);
-L(3) = Link('revolute', 'd', 0.01, 'a', 0.1, 'alpha', pi,'m',0.18,'r',cog2,'I',ra2);
-L(4) = Link('revolute', 'd', 0.01, 'a', 0, 'alpha', pi,'m',0.13,'r',cog3,'I',ra3);
+L(2) = Link('revolute','d',0.0,'a',0.06, 'alpha', 0,'m',0.25,'r',cog1,'I',ra1);
+L(3) = Link('revolute', 'd', 0.0, 'a', 0.1, 'alpha', pi,'m',0.18,'r',cog2,'I',ra2);
+L(4) = Link('revolute', 'd', 0.0, 'a', 0, 'alpha', pi,'m',0.13,'r',cog3,'I',ra3);
 robot=SerialLink(L,'name','robot');
 
 
