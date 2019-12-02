@@ -283,9 +283,11 @@ function Outputs(block)
     %[tau,wbase]=robot.rne(pos,w,a,'gravity',gravity);
     %记得重新处理重力的影响
    %F_tol = F_tol + wbase(1:3);
-    %M_tol = M_tol + wbase(4:6);   
-block.OutputPort(1).Data = F_tol;
-block.OutputPort(2).Data = M_tol;
+    %M_tol = M_tol + wbase(4:6);  
+    F_tol(3) = 0;
+    M_tol(3) = 0;
+    block.OutputPort(1).Data = F_tol;
+    block.OutputPort(2).Data = M_tol;
 function Update(block)
   
 %block.Dwork(2).Data
