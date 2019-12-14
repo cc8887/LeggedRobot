@@ -53,12 +53,12 @@ xi = [1;0;0];
 yi = [0;1;0];
 inipos = [0,pi/2,0,0];
 tT = 10;
-w = [   2,      0,          0,          2];
+w = [   pi,      0,          0,          pi];
 omega = [0,0,0,0];
-A = [   pi/2,   pi/2,       pi/2,       pi/2];
-phi = [0,0,0,0];
+A = [   pi/4,   pi/2,       pi/2,       pi/4];
+phi = [0,0,0,pi/2];
 pos = [0,0,0,0];
-ddt = 0.1;
+ddt = 0.01;
 output=[];
 
     for t = 0:ddt:2*tT
@@ -67,7 +67,7 @@ output=[];
             omega(i) =w(i)* A(i)*cos(w(i)*t+phi(i));
         end
         %[mov,theta] = pos_theta(robot,pos);
-        robot.plot(pos)
+       % robot.plot(pos)
         j = robot.jacob0(omega,'rot');
         omegaOut = j*omega';
        % output = [output;t,mov',theta];
