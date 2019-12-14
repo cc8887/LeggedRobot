@@ -1,3 +1,4 @@
+%用于输出舵机控制板一样的关节控制信号
 
 function p = po(t,dt1,dt2,dt3,dt4,finP1,finP2)
 tampT = mod(t*1000,(dt1+dt2+dt3+dt4));

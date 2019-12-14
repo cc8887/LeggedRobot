@@ -1,3 +1,4 @@
+%用于stl文件的读入
 function varargout = stlread(file)
 % STLREAD imports geometry from an STL file into MATLAB.
 %    FV = STLREAD(FILENAME) imports triangular faces from the ASCII or binary
