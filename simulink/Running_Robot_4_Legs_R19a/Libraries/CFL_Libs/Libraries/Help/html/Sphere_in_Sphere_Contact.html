@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>testPad</title><meta name="generator" content="MATLAB 9.1"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2019-04-10"><meta name="DC.source" content="testPad.m"><style type="text/css">
+      --><title>Sphere in Sphere Contact Force (3D)</title><meta name="generator" content="MATLAB 9.2"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2017-07-15"><meta name="DC.source" content="Sphere_in_Sphere_Contact.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -66,32 +66,34 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><pre class="codeinput"><span class="comment">% for i = 0:0.01:50</span>
-<span class="comment">%     plot(t,po(t,1000,0,1000,0,-45,45));</span>
-<span class="comment">%     hold on;</span>
-<span class="comment">% end</span>
-x = 1:0.1:2
-y1 = sawtooth(x*(2*pi),0.5);
-plot(x,y1)
-</pre><pre class="codeoutput">
-x =
-
-  1 &#33267; 7 &#21015;
-
-    1.0000    1.1000    1.2000    1.3000    1.4000    1.5000    1.6000
-
-  8 &#33267; 11 &#21015;
-
-    1.7000    1.8000    1.9000    2.0000
-
-</pre><img vspace="5" hspace="5" src="testPad_01.png" style="width:560px;height:420px;" alt=""> <p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2016b</a><br></p></div><!--
+  </style></head><body><div class="content"><h1>Sphere in Sphere Contact Force (3D)</h1><!--introduction--><p>This block implements a contact force between two spheres.  The force acts to keep distance from frame SphB to SphF less than (inner radius SphB - radius SphF).</p><p>This is part of the <a href="matlab:web('Contact_Forces_Demo_Script.html');">Simscape Multibody Contact Forces Library</a></p><!--/introduction--><p><img vspace="5" hspace="5" src="Sphere_in_Sphere_Help_IMAGE.png" alt=""> </p><p>Frames connected to ports:</p><div><ol><li>Located at center of sphere</li><li>Orientation does not matter</li></ol></div><p>Output signal is a bus with intermediate calculations and total force.</p><p class="footer">Copyright 2014-2019 The MathWorks, Inc.<br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2017a</a><br></p></div><!--
 ##### SOURCE BEGIN #####
-% for i = 0:0.01:50
-%     plot(t,po(t,1000,0,1000,0,-45,45));
-%     hold on;
-% end
-x = 1:0.1:2
-y1 = sawtooth(x*(2*pi),0.5);
-plot(x,y1)
+%% Sphere in Sphere Contact Force (3D)
+% 
+% This block implements a contact force between two spheres.  The force
+% acts to keep distance from frame SphB to SphF less than (inner radius
+% SphB - radius SphF).
+%
+% This is part of the <matlab:web('Contact_Forces_Demo_Script.html'); Simscape Multibody Contact Forces Library>
+%
+% Copyright 2014-2019 The MathWorks, Inc.
+
+
+
+%% 
+% 
+% <<Sphere_in_Sphere_Help_IMAGE.png>>
+
+%% 
+%
+% Frames connected to ports:
+%
+% # Located at center of sphere
+% # Orientation does not matter
+% 
+% Output signal is a bus with intermediate calculations and total force.
+% 
+% 
+
 ##### SOURCE END #####
 --></body></html>
